@@ -1,27 +1,97 @@
 const Node = require('./node');
 
 class LinkedList {
-    constructor() {}
+    constructor() {
+        this.length = 0
+    }
 
-    append(data) {}
+    append(data) {
+        const newNode = new Node(data, this._tail);
 
-    head() {}
+        this._head = this._head || newNode;
+        if (this._tail) this._tail.next = newNode;
+        this._tail = newNode;
+        this.length++;
 
-    tail() {}
+        return this
+    }
 
-    at(index) {}
+    head() {
+        return this._head ? this._head.data : null
+    }
 
-    insertAt(index, data) {}
+    tail() {
+        return this._tail ? this._tail.data : null
+    }
 
-    isEmpty() {}
+    _at(index) {
+        let atIndexNode = this._head;
+        for (let i = 0; i < index; i++) {
+            atIndexNode = atIndexNode.next
+        }
+        return atIndexNode
+    }
 
-    clear() {}
+    at(index) {
+        return this._at(index).data
+    }
 
-    deleteAt(index) {}
+    insertAt(index, data) {
+        const prevNode = this._at(index - 1);
+        const nextNode = this._at(index);
 
-    reverse() {}
+        if (prevNode && nextNode) {
+            const newNode = new Node(data, prevNode, nextNode);
+            prevNode.next = newNode;
+            nextNode.prev = newNode;
+            this.length++
+        } else {
+            this.append(data)
+        }
 
-    indexOf(data) {}
+        return this
+    }
+
+    isEmpty() {
+        return !this.length
+    }
+
+    clear() {
+        this._head = null;
+        this._tail = null;
+        this.length = 0;
+
+        return this
+    }
+
+    deleteAt(index) {
+        const prevNode = this._at(index - 1);
+        const nextNode = this._at(index + 1);
+
+        if (prevNode) {
+            prevNode.next = nextNode;
+        }
+        if (nextNode) {
+            nextNode.prev = prevNode
+        }
+
+        return this
+    }
+
+    reverse() {
+        // not implemented
+
+        return this
+    }
+
+    indexOf(data) {
+        let indexNode = this._tail;
+        let index = this.length - 1;
+        for (; index !== -1 && indexNode.data !== data; index--) {
+            indexNode = indexNode.prev
+        }
+        return index
+    }
 }
 
 module.exports = LinkedList;
