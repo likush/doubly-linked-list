@@ -79,7 +79,17 @@ class LinkedList {
     }
 
     reverse() {
-        // not implemented
+        let processedNode = this._head;
+        while (processedNode) {
+            const next = processedNode.next;
+            processedNode.next = processedNode.prev;
+            processedNode.prev = next;
+            processedNode = next
+        }
+
+        const tail = this._tail;
+        this._tail = this._head;
+        this._head = tail;
 
         return this
     }
